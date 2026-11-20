@@ -1,0 +1,9 @@
+sku,description,location,quantity,unit_cost,value
+SCALE-200,Industrial scale 200kg,Dallas,10683,18500.00,197635500.00
+SCALE-450,Industrial scale 450kg,Dallas,5212,29000.00,151148000.00
+WIFI-AP7,WiFi access point AP7,Dallas,30449,4200.00,127885800.00
+WIFI-CTRL2,WiFi controller CTRL2,Dallas,9099,11500.00,104636200.44
+SCALE-200,Industrial scale 200kg,Chicago,7806,18500.00,144411000.00
+SCALE-450,Industrial scale 450kg,Chicago,3808,29000.00,110432000.00
+WIFI-AP7,WiFi access point AP7,Chicago,22248,4200.00,93441600.00
+WIFI-CTRL2,WiFi controller CTRL2,Chicago,6648,11500.00,76450820.41

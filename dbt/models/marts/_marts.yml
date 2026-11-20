@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: fct_account_balances
+    description: One row per entity, account, and month, with total debits, credits, and net change.
+  - name: fct_variance
+    description: Expense actuals vs budget by entity, account, and month, with variance amount and percent.
+  - name: fct_inventory_reconciliation
+    description: GL inventory balance vs subledger value by location, with the difference.
+  - name: fct_intercompany
+    description: Due-from and due-to affiliate balances by entity. Totals across entities must match.
+  - name: fct_bank_rec_exceptions
+    description: October cash amounts where the GL and bank statement copy counts disagree.
+  - name: fct_tax_provision
+    description: Tax provision by entity for Q2 and Q3 2026, with the quarter-over-quarter change.

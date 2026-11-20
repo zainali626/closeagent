@@ -1,0 +1,6 @@
+department,item,expected_amount,status,period
+Finance,Audit fee accrual,18500000.00,received,2026-10
+Legal,Outside counsel - October invoice,9200000.00,missing,2026-10
+Marketing,Brightline Media campaign accrual,14200000.00,received,2026-10
+Operations,Warehouse overtime accrual,6700000.00,received,2026-10
+IT,CloudNine true-up invoice,3100000.00,missing,2026-10

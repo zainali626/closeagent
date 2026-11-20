@@ -1,0 +1,30 @@
+account_id,account_name,account_type
+1000,Cash,Asset
+1300,Accounts Receivable,Asset
+1350,Due from Affiliates,Asset
+1400,Inventory,Asset
+1500,Prepaid Expenses,Asset
+1550,Accumulated Depreciation,Asset
+2100,Accounts Payable,Liability
+2150,Due to Affiliates,Liability
+2200,Accrued Payroll,Liability
+2300,Tax Payable,Liability
+2400,Accrued Expenses,Liability
+2500,Deferred Revenue,Liability
+3000,Common Stock,Equity
+3100,Retained Earnings,Equity
+4100,Sales Revenue,Revenue
+4200,Service Revenue,Revenue
+4300,Other Income,Revenue
+5100,Cost of Goods Sold,Expense
+6100,Professional Services,Expense
+6200,Payroll Expense,Expense
+6300,Rent Expense,Expense
+6400,Software Subscriptions,Expense
+6450,Intercompany Services Expense,Expense
+6500,Utilities,Expense
+6600,Marketing Expense,Expense
+6700,Insurance Expense,Expense
+6800,Depreciation Expense,Expense
+6900,Travel Expense,Expense
+7100,Interest Expense,Expense

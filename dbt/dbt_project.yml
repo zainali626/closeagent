@@ -1,0 +1,32 @@
+name: closeagent
+version: 0.1.0
+config-version: 2
+profile: closeagent
+
+model-paths: ["models"]
+seed-paths: ["../data/raw"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+
+models:
+  closeagent:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
+
+# Koch-scale amounts overflow int32 - pin monetary seed columns to DOUBLE
+# (applied by column name across all seeds)
+seeds:
+  closeagent:
+    +column_types:
+      budget_amount: double
+      pretax_income: double
+      provision_amount: double
+      debit: double
+      credit: double
+      amount: double
+      expected_amount: double
+      unit_cost: double
+      value: double
+      gl_balance: double

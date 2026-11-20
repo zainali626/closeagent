@@ -1,0 +1,7 @@
+closeagent:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: ../data/closeagent.duckdb
+      schema: main
