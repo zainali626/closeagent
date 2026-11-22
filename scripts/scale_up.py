@@ -135,12 +135,12 @@ def main():
         jid = next_jid(period)
         day = rng.randint(1, 28)
         memo = f"{memo_base} #{seq:06d}"
-        common = dict(journal_id=jid, journal_date=f"{y}-{m:02d}-{day:02d}",
-                      period=period, entity=entity,
-                      region=rng.choice(REGIONS), channel="",
-                      cost_center=rng.choice(COST_CENTERS),
-                      vendor=rng.choice(vendors) if vendors else "",
-                      location="", memo=memo)
+        common = {"journal_id": jid, "journal_date": f"{y}-{m:02d}-{day:02d}",
+                      "period": period, "entity": entity,
+                      "region": rng.choice(REGIONS), "channel": "",
+                      "cost_center": rng.choice(COST_CENTERS),
+                      "vendor": rng.choice(vendors) if vendors else "",
+                      "location": "", "memo": memo}
         return [
             dict(common, account_id=account, debit=money(amt), credit="0.00"),
             dict(common, account_id="2100", debit="0.00", credit=money(amt)),
@@ -165,14 +165,14 @@ def main():
         if rng.random() < 0.6:      # customer receipt: Dr Cash / Cr Revenue
             memo = f"Customer receipt #{seq:06d}"
             rows = [
-                dict(journal_id=jid, journal_date=date, period="2026-10",
-                     entity=entity, account_id="1000", debit=money(amt),
-                     credit="0.00", region="", channel="Direct",
-                     cost_center="FIN", vendor="", location="", memo=memo),
-                dict(journal_id=jid, journal_date=date, period="2026-10",
-                     entity=entity, account_id="4100", debit="0.00",
-                     credit=money(amt), region="", channel="Direct",
-                     cost_center="FIN", vendor="", location="", memo=memo),
+                {"journal_id": jid, "journal_date": date, "period": "2026-10",
+                     "entity": entity, "account_id": "1000", "debit": money(amt),
+                     "credit": "0.00", "region": "", "channel": "Direct",
+                     "cost_center": "FIN", "vendor": "", "location": "", "memo": memo},
+                {"journal_id": jid, "journal_date": date, "period": "2026-10",
+                     "entity": entity, "account_id": "4100", "debit": "0.00",
+                     "credit": money(amt), "region": "", "channel": "Direct",
+                     "cost_center": "FIN", "vendor": "", "location": "", "memo": memo},
             ]
             signed = amt
             desc = f"Customer receipt - {entity}"
@@ -180,21 +180,21 @@ def main():
             acct = rng.choice(pay_accounts)
             memo = f"Operating payment #{seq:06d}"
             rows = [
-                dict(journal_id=jid, journal_date=date, period="2026-10",
-                     entity=entity, account_id=acct, debit=money(amt),
-                     credit="0.00", region="", channel="",
-                     cost_center="OPS", vendor="", location="", memo=memo),
-                dict(journal_id=jid, journal_date=date, period="2026-10",
-                     entity=entity, account_id="1000", debit="0.00",
-                     credit=money(amt), region="", channel="",
-                     cost_center="OPS", vendor="", location="", memo=memo),
+                {"journal_id": jid, "journal_date": date, "period": "2026-10",
+                     "entity": entity, "account_id": acct, "debit": money(amt),
+                     "credit": "0.00", "region": "", "channel": "",
+                     "cost_center": "OPS", "vendor": "", "location": "", "memo": memo},
+                {"journal_id": jid, "journal_date": date, "period": "2026-10",
+                     "entity": entity, "account_id": "1000", "debit": "0.00",
+                     "credit": money(amt), "region": "", "channel": "",
+                     "cost_center": "OPS", "vendor": "", "location": "", "memo": memo},
             ]
             signed = -amt
             desc = f"Operating payment - {entity}"
             filler_totals[(entity, acct, "2026-10")] += amt
         new_gl.extend(rows)
-        new_bank.append(dict(bank_date=date, description=desc,
-                             amount=money(signed), reference=jid))
+        new_bank.append({"bank_date": date, "description": desc,
+                             "amount": money(signed), "reference": jid})
 
     # ---- general expense filler ------------------------------------------
     remaining_lines = TARGET_GL_LINES - len(gl) - len(new_gl)
@@ -227,8 +227,8 @@ def main():
     existing_ids = {r["account_id"] for r in chart}
     for aid, name, typ in NEW_ACCOUNTS:
         if aid not in existing_ids:
-            chart.append(dict(account_id=aid, account_name=name,
-                              account_type=typ))
+            chart.append({"account_id": aid, "account_name": name,
+                              "account_type": typ})
     write("chart_of_accounts.csv", chart, list(chart[0].keys()))
 
     # ---- budgets: add only missing keys, sized near filler actuals --------
@@ -236,8 +236,8 @@ def main():
     for (entity, account, period), actual in sorted(filler_totals.items()):
         if (entity, account, period) not in have and actual > 0:
             amt = round(actual * rng.uniform(0.94, 1.06), 2)
-            budgets.append(dict(entity=entity, account_id=account,
-                                period=period, budget_amount=money(amt)))
+            budgets.append({"entity": entity, "account_id": account,
+                                "period": period, "budget_amount": money(amt)})
     write("budgets.csv", budgets, list(budgets[0].keys()))
 
     # ---- accrual submissions: received only --------------------------------
@@ -248,10 +248,10 @@ def main():
              "Software true-up", "Facilities accrual", "Royalty accrual"]
     for i in range(120):
         period, _, _ = rng.choice(PERIODS)
-        subs.append(dict(department=rng.choice(depts),
-                         item=f"{rng.choice(items)} - batch {i + 1:03d}",
-                         expected_amount=money(rng.uniform(500_000, 25_000_000)),
-                         status="received", period=period))
+        subs.append({"department": rng.choice(depts),
+                         "item": f"{rng.choice(items)} - batch {i + 1:03d}",
+                         "expected_amount": money(rng.uniform(500_000, 25_000_000)),
+                         "status": "received", "period": period})
     write("accrual_submissions.csv", subs, list(subs[0].keys()))
 
     # ---- tax provision: other quarters and entities only -------------------
@@ -264,9 +264,9 @@ def main():
                 continue
             pretax = rng.uniform(800_000_000, 6_500_000_000)
             prov = round(pretax * rng.uniform(0.12, 0.16) / 1_000_000) * 1_000_000
-            tax.append(dict(entity=entity, quarter=q,
-                            pretax_income=money(round(pretax, 2)),
-                            provision_amount=money(float(prov))))
+            tax.append({"entity": entity, "quarter": q,
+                            "pretax_income": money(round(pretax, 2)),
+                            "provision_amount": money(float(prov))})
     write("tax_provision.csv", tax, list(tax[0].keys()))
 
     # ---- inventory: new locations that tie exactly -------------------------
@@ -277,7 +277,7 @@ def main():
         ("Gearbox assembly", 5480.00), ("Filtration cartridge", 640.00),
         ("Pressure gauge set", 890.50), ("Welding electrode pack", 315.25),
     ]
-    ctrl_map = {r["location"]: r for r in ctrl}
+    {r["location"]: r for r in ctrl}
     for loc in NEW_LOCATIONS:
         total = 0.0
         for i in range(SKUS_PER_LOCATION):
@@ -286,11 +286,11 @@ def main():
             unit = round(base_cost * rng.uniform(0.9, 1.1), 2)
             value = round(qty * unit, 2)
             total += value
-            sub.append(dict(sku=f"SKU-{loc[:3].upper()}-{i + 1:03d}",
-                            description=desc, location=loc, quantity=qty,
-                            unit_cost=money(unit), value=money(value)))
-        ctrl.append(dict(location=loc, gl_balance=money(round(total, 2)),
-                         as_of_date="2026-10-31"))
+            sub.append({"sku": f"SKU-{loc[:3].upper()}-{i + 1:03d}",
+                            "description": desc, "location": loc, "quantity": qty,
+                            "unit_cost": money(unit), "value": money(value)})
+        ctrl.append({"location": loc, "gl_balance": money(round(total, 2)),
+                         "as_of_date": "2026-10-31"})
     write("inventory_subledger.csv", sub, list(sub[0].keys()))
     write("gl_inventory_control.csv", ctrl, list(ctrl[0].keys()))
 
