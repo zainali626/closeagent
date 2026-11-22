@@ -8,3 +8,4 @@ data/processed/
 target/
 dbt_packages/
 logs/
+data/scaled/
